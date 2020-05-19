@@ -1,3 +1,9 @@
+/* 
+***************************************
+***     IMPLEMENTAÇÃO DO JOGO:      ***
+***************************************
+*/
+
 function novoElemento(tagName, className) {
     const elem = document.createElement(tagName)
     elem.className = className
@@ -39,7 +45,7 @@ function ParDeBarreiras(altura, abertura, x) {
     this.setPosicaoNoEixoX(x)
 }
 
-function Barreiras(altura, largura, abertura, espaco, notificarPonto) {
+function Barreiras(altura, largura, abertura, espaco, velocidade, notificarPonto) {
     this.pares = [
         new ParDeBarreiras(altura, abertura, largura),
         new ParDeBarreiras(altura, abertura, largura + espaco),
@@ -47,7 +53,7 @@ function Barreiras(altura, largura, abertura, espaco, notificarPonto) {
         new ParDeBarreiras(altura, abertura, largura + espaco * 3),
     ]
 
-    const deslocamento = 3
+    const deslocamento = parseInt(velocidade)
     this.animar = () => {
         this.pares.forEach(par => {
             par.setPosicaoNoEixoX(par.getPosicaoNoEixoX() - deslocamento)
@@ -144,18 +150,18 @@ function colidiu(passaro, barreiras) {
 }
 
 
-function FlappyBird() { 
+function FlappyBird(velocidade, espacamento) { 
     let pontos = 0
 
     const areaDoJogo = document.querySelector('[wm-flappy')
     const altura = areaDoJogo.clientHeight
     const largura = areaDoJogo.clientWidth
-    const distanciaEntreBarreiras = 200
-    const espacoEntreBarreiras = 400 
+    const distanciaEntreBarreiras = espacamento
+    const espacoEntreBarreiras = 400
 
     const progresso = new Progresso()
     const barreiras = new Barreiras(altura, largura, distanciaEntreBarreiras, espacoEntreBarreiras,
-            () => progresso.atualizarPontos(++pontos))
+        velocidade, () => progresso.atualizarPontos(++pontos))
     const passaro = new Passaro(altura)
 
     areaDoJogo.appendChild(progresso.elemento)
@@ -173,4 +179,25 @@ function FlappyBird() {
     }
 }
 
-new FlappyBird().start()
+/* 
+***************************************
+***      IMPLEMENTAÇÃO PÁGINA       ***
+***************************************
+*/
+
+const menu = document.querySelector('.menu')
+const form = document.querySelector('[formMenu]')
+const botao = form.querySelector('[iniciarJogo]')
+
+function comecarJogo(e) {
+    e.preventDefault()
+    menu.style.transition = "all "
+    menu.style.display = "none"
+    const dificuldadeVelocidade = form.velocidade.value
+    const dificuldadeEspacamento = form.espacamento.value
+
+    new FlappyBird(dificuldadeVelocidade, dificuldadeEspacamento).start()
+ }
+
+botao.onclick = comecarJogo
+

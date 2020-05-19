@@ -11,6 +11,24 @@
 <body class="conteudo">
     <h1>RSK Bird</h1>
     <div wm-flappy>
+        <div class="menu">
+            <h1>Configurações</h1>
+            <form formMenu>                
+                <label for="velocidade">Velocidade do jogo:</label>
+                <select name="velocidade">
+                    <option value="4">Fácil</option>
+                    <option value="6">Médio</option>
+                    <option value="10">Difícil</option>
+                </select>
+                <label for="espacamento">Espaçamento entre túneis:</label>
+                <select name="espacamento">
+                    <option value="200">Fácil</option>
+                    <option value="185">Médio</option>
+                    <option value="170">Difícil</option>
+                </select>
+                <button class="botao" iniciarJogo>Iniciar</button>
+            </form>
+        </div>
     </div>
     <script src="js/flappy.js"></script>
 </body>
